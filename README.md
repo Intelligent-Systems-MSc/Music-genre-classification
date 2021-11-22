@@ -14,7 +14,18 @@ The dataset is pre-processed in the following way :
 * For each music file, the spectrogram is extracted from the audio file using the [librosa](https://librosa.github.io/librosa/) library.
 * The spectrogram is resized to a fixed size using the tensorflow.keras.preprocessing.image.ImageDataGenerator.flow_from_directory.
 * Data splits into test and train are performed using spltit_dataset.py script.
-
+### Usage 
+ To generate the spectrograms and the data splits, do as follows :
+ * Download GTZAN dataset from [here](http://opihi.cs.uvic.ca/sound/genres.tar.gz).
+ * Unzip the dataset and move the files to the `data` directory.
+ * Run the following command :
+```bash
+python create_spectrograms.py --audio_files_path=data/genres --dataset_path=data/dataset/ 
+```
+* Split the dataset into train and test using the `split_dataset.py` script.
+```bash
+python split_dataset.py --dataset_path=data/dataset/ --train_size=0.8
+```
 
 ## Models
 The models are implemented using the [tensorflow.keras](https://www.tensorflow.org/api_docs/python/tf/keras) library.

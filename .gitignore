@@ -17,8 +17,3 @@ logs
 # Ignore py cache files
 __pycache__/
 
-# Ignore Readme files
-README.md
-
-# Ignore black_model.ipynb file
-black_model.ipynb

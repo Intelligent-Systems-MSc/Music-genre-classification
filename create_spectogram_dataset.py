@@ -18,18 +18,18 @@ This script is used to create spectogram dataset for training and testing :
 
 def create_spectogram_dataset(audio_files_path, dataset_path):
     # Iterate over the diretories in the folder "genres"
-    for dir in tqdm(os.listdir("audio_files_path")):
+    for dir in tqdm(os.listdir(audio_files_path)):
         # For each directory, iterate over the audio files
-        for file in tqdm(os.listdir("audio_files_path/" + dir)):
+        for file in tqdm(os.listdir(audio_files_path+"/" + dir)):
             # Load the audio file
-            y, sr = librosa.load("audio_files_path/" + dir + "/" + file)
+            y, sr = librosa.load(audio_files_path+"/" + dir + "/" + file)
             # Create the spectogram with , nfft = 2048, hop_length = 1024 and Blackman Harris window
             S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=2048, hop_length=1024, fmin=0.0, fmax=sr/2, dtype=np.float32)
             
             #Convert the . to - in the file name to avoid problems with the file name
             file_name = file.replace(".", "-")[:-4]
             # Get the absolute path of the file for windows and linux
-            file_path = os.path.abspath("dataset_path/" + dir)
+            file_path = os.path.abspath(dataset_path+"/" + dir)
             # IF windows OS is used
             if os.name == 'nt':
                 #Delete the double backslash in the path
@@ -44,7 +44,7 @@ def create_spectogram_dataset(audio_files_path, dataset_path):
             # Save the spectogram in the directory "dataset"
             librosa.display.specshow(librosa.power_to_db(S, ref=np.max), fmax=sr/2)
             plt.axis("off")
-            plt.savefig("dataset_path/" + dir + "/" + file_name + ".png")
+            plt.savefig(dataset_path +"/" + dir + "/" + file_name + ".png")
             plt.close()
  
 def main():

@@ -24,9 +24,9 @@ class BlackBoxModel:
     def __init__(self):
         self.model = None
         self.model_name = "black_box_model"
-        self.model_path = "models/"+ self.model_name + self.model_name + ".h5"
-        self.model_weights_path = "models/" + self.model_name + "_weights.h5"
-        self.model_history_path = "models/" + self.model_name + "_history.png"
+        self.model_path = "models/" + self.model_name +"/"+ self.model_name + ".h5"
+        self.model_weights_path = "models/" + self.model_name +"/"+  self.model_name + "_weights.h5"
+        self.model_history_path = "models/" + self.model_name +"/"+ self.model_name + "_history.png"
         self.model_history = None
     
     def build_model(self):
@@ -144,7 +144,7 @@ class BlackBoxModel:
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         plt.tight_layout()
-        plt.savefig("models/"+ self.model_name +"confusion_matrix.png")
+        plt.savefig("models/"+ self.model_name +"/"+"confusion_matrix.png")
         plt.show()
 
 def main():
@@ -160,7 +160,7 @@ def main():
     black_box_model.build_model()
     
     # Train the black box model
-    black_box_model.train_model(train_generator, epochs=50)
+    black_box_model.train_model(train_generator, epochs=100)
 
     # Save the black box model
     black_box_model.save_model()
