@@ -9,7 +9,7 @@ import argparse
 
 
 """
-Authors: Toufik FERHAT, Asma DAGMOUNE
+Authors: Toufik FERHAT, Asma DAGMOUNE , Rayane KADEM
 This script is used to create spectogram dataset for training and testing :
     - The dataset is created from the audio files in the folder "audio_files"
     - The dataset is saved in the folder "dataset"
@@ -44,7 +44,8 @@ def create_spectogram_dataset(audio_files_path, dataset_path):
             # Save the spectogram in the directory "dataset"
             librosa.display.specshow(librosa.power_to_db(S, ref=np.max), fmax=sr/2)
             plt.axis("off")
-            plt.savefig(dataset_path +"/" + dir + "/" + file_name + ".png")
+            name= dataset_path +"/" + dir + "/" + file_name + ".png"
+            plt.savefig(name, bbox_inches='tight',pad_inches = 0)
             plt.close()
  
 def main():
@@ -55,12 +56,8 @@ def main():
     args = parser.parse_args()
 
     # Create the spectogram dataset
+
     create_spectogram_dataset(args.audio_files_path, args.dataset_path)
 
 if __name__ == "__main__":
     main()
-     
-
-
-
-

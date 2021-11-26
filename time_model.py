@@ -144,7 +144,7 @@ def main():
     time_model = TimeModel()
     
     # Build the time model
-    time_model.build_model(n=4)
+    time_model.build_model(n=8)
     
     # Train the time model
     time_model.train_model(train_generator, epochs=100)

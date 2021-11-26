@@ -49,7 +49,13 @@ class BlackBoxModel:
         
         # Compiling the model
         self.model = Model(input_layer, output_layer)
-        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    
+    def compile_model(self, optimizer, loss, metrics):
+        """
+        This function is used to compile the black box model :
+        """
+        # Compile the model
+        self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
         
     def train_model(self, train_generator, epochs=10):
         """
@@ -146,6 +152,12 @@ class BlackBoxModel:
         plt.tight_layout()
         plt.savefig("models/"+ self.model_name +"/"+"confusion_matrix.png")
         plt.show()
+    
+    def summary(self):
+        """
+        This function is used to print the summary of the black box model :
+        """
+        self.model.summary()
 
 def main():
     
@@ -153,14 +165,27 @@ def main():
     train_generator = fetch_spectogram_dataset("data/train")
     test_generator =  fetch_spectogram_dataset("data/test")
     
+    
     # Create the black box model
     black_box_model = BlackBoxModel()
+    
+    # Define the optimizer with a learning rate of 0.05
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.005)
+
+    # Define the loss function
+    loss = tf.keras.losses.CategoricalCrossentropy()
+
+    # Define the metrics accruacy 
+    metrics = ['accuracy']
     
     # Build the black box model
     black_box_model.build_model()
     
+    # Compile the black box model
+    black_box_model.compile_model(optimizer, loss, metrics)
+    
     # Train the black box model
-    black_box_model.train_model(train_generator, epochs=100)
+    black_box_model.train_model(train_generator, epochs = 150)
 
     # Save the black box model
     black_box_model.save_model()
@@ -173,6 +198,9 @@ def main():
     
     # Plot the confusion matrix
     black_box_model.plot_confusion_matrix(test_generator)
+    
+    # Print the summary of the black box model
+    black_box_model.summary()
 
 if __name__ == "__main__":
     main()
