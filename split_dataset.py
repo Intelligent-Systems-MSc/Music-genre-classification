@@ -65,8 +65,8 @@ def split_dataset(dataset_path_in, path_out, train_size, validation_size):
 def main():
     # Parse the arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset_path", type=str, default="data/dataset/melspectrogram/", help="Path to the dataset")
-    parser.add_argument("--path_out", type=str, default="data/images/melspectorgram/", help="Path to the output folder")
+    parser.add_argument("--dataset_path", type=str, default="data/dataset/mfcc/", help="Path to the dataset")
+    parser.add_argument("--path_out", type=str, default="data/images/mfcc/", help="Path to the output folder")
     parser.add_argument("--train_size", type=float, default=0.8, help="Size of the training set")
     parser.add_argument("--validation_size", type=float, default=0, help="Size of the validation set")
     args = parser.parse_args()

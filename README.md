@@ -4,10 +4,11 @@
 This repository aims to provide an implementation of the [Experimenting with Musically Motivated
 Convolutional Neural Networks](https://nubo.ircam.fr/index.php/s/27NkneQw8oBnY8P) problem with some adjustements.
 
-The problem is to classify music genres based on the spectrogram of a music file.
+The problem is to classify music genres based on the audio features representation of a music file.
 
 ## Dataset
 The dataset is the GTZAN music genre collection composed of **1000** music files from **10** genres.
+
 
 ## Pre-processing
 The dataset is pre-processed in the following way :
@@ -16,8 +17,7 @@ The dataset is pre-processed in the following way :
 * Data splits into test and train are performed using spltit_dataset.py script.
 ### Usage 
  To generate the spectrograms and the data splits, do as follows :
- * Download GTZAN dataset from [here](http://opihi.cs.uvic.ca/sound/genres.tar.gz).
- * Unzip the dataset and move the files to the `data` directory.
+ * Run the "download_extract_GTZAN" file depending on your system to download the dataset and extract it.
  * Run the following command :
 ```bash
 python create_spectrograms.py --audio_files_path=data/genres --dataset_path=data/dataset/ 
@@ -40,7 +40,7 @@ The architecture is defined in the [black_box_mmodel](model_architecture.py) fil
 * The convolutional layer is flattened and connected to a dense layer with 200 neurons
 * Finally, the dense layer is connected to a softmax layer with 10 neurons to output a 10-dimensional vector
 
-
+### Time model
 
 
 ## Results

@@ -162,8 +162,8 @@ class BlackBoxModel:
 def main():
     
     # Fetch the training and test dataset
-    train_generator = fetch_spectogram_dataset("data/images/melspectorgram/train")
-    test_generator =  fetch_spectogram_dataset("data/images/melspectorgram/test")
+    train_generator = fetch_spectogram_dataset("data/images/mfcc/train")
+    test_generator =  fetch_spectogram_dataset("data/images/mfcc/test")
    
     
     
