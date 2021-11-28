@@ -62,7 +62,7 @@ class BlackBoxModel:
         This function is used to train the black box model :
         """
         # Training the model
-        self.model_history = self.model.fit_generator(train_generator, epochs=epochs)
+        self.model_history = self.model.fit_generator(train_generator,  epochs=epochs)
         
     def save_model(self):
         """
@@ -162,8 +162,9 @@ class BlackBoxModel:
 def main():
     
     # Fetch the training and test dataset
-    train_generator = fetch_spectogram_dataset("data/train")
-    test_generator =  fetch_spectogram_dataset("data/test")
+    train_generator = fetch_spectogram_dataset("data/images/mfcc/train")
+    test_generator =  fetch_spectogram_dataset("data/images/mfcc/test")
+   
     
     
     # Create the black box model
@@ -185,7 +186,7 @@ def main():
     black_box_model.compile_model(optimizer, loss, metrics)
     
     # Train the black box model
-    black_box_model.train_model(train_generator, epochs = 150)
+    black_box_model.train_model(train_generator,  epochs = 150)
 
     # Save the black box model
     black_box_model.save_model()
