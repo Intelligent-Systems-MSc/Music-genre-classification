@@ -35,7 +35,7 @@ class TimeModel(object):
         """
         M = 40
         # Defining the input layer
-        input_layer = tf.keras.layers.Input(shape=(40, 80, 3))
+        input_layer = tf.keras.layers.Input(shape=(120, 200, 3))
         
         # Defining the convolutional layer
         conv_layer = tf.keras.layers.Conv2D(32, (1, n), activation='relu')(input_layer)
@@ -49,12 +49,12 @@ class TimeModel(object):
         self.model = Model(input_layer, output_layer)
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
         
-    def train_model(self, train_generator, epochs=10):
+    def train_model(self, train_generator, validation_generator, epochs=10):
         """
         This function is used to train the time model :
         """
         # Training the model
-        self.model_history = self.model.fit_generator(train_generator, epochs=epochs)
+        self.model_history = self.model.fit_generator(train_generator,  validation_data = validation_generator, epochs=epochs)
         
     def save_model(self):
         """
@@ -140,8 +140,9 @@ class TimeModel(object):
 def main():
     
     #Fetch the training dataset and the test dataset
-    train_generator = fetch_spectogram_dataset("data/images/melspectorgram/train")
-    test_generator = fetch_spectogram_dataset("data/images/melspectorgram/test")
+    train_generator = fetch_spectogram_dataset("data/images/melspectrogram/train")
+    test_generator = fetch_spectogram_dataset("data/images/melspectrogram/test")
+    validation_generator = fetch_spectogram_dataset("data/images/melspectrogram/validation")
     
     # Create the time model
     time_model = TimeModel()
@@ -150,7 +151,7 @@ def main():
     time_model.build_model(n=4)
     
     # Train the time model
-    time_model.train_model(train_generator, epochs=5)
+    time_model.train_model(train_generator, validation_generator, epochs=50)
     
     # Save the time model
     #time_model.save_model()

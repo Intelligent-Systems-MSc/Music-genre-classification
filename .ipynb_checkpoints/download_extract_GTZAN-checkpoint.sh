@@ -9,11 +9,11 @@ rm genres.tar.gz
 
 # Create data folder if it doesn't exist
 if [ ! -d "data" ]; then
-    mkdir Data
+    mkdir data
 fi
 
 # Move genre to data folder 
-mv genres Data/
+mv genres data/
 
 # Delete the files in genres 
 rm -f data/*
