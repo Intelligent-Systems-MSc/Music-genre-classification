@@ -21,11 +21,11 @@ import matplotlib.pyplot as plt
 import itertools
 import argparse
 
-# Define the time model
-class TimeModel(object):
+# Define the frequency model
+class FrequencyModel(object):
     def __init__(self):
         self.model = None
-        self.model_name = "time_model"
+        self.model_name = "frequency_model"
         self.model_path = "models/"+ self.model_name +"/"+ self.model_name + ".h5"
         self.model_weights_path = "models/" + self.model_name + "/"+self.model_name + "_weights.h5"
         self.model_history_path = "models/" + self.model_name +"/"+ self.model_name + "_history.png"
@@ -35,13 +35,13 @@ class TimeModel(object):
         """
         This function is used to create the time model :
         """
-        M = 40
+        N = 40
         # Defining the input layer
         input_layer = tf.keras.layers.Input(shape=(40, 80, 3))
         
         # Defining the convolutional layer
         conv_layer = tf.keras.layers.Conv2D(32, (n, 1), activation='relu')(input_layer)
-        max_pool_layer = tf.keras.layers.MaxPool2D((1, M))(conv_layer)
+        max_pool_layer = tf.keras.layers.MaxPool2D((1, N))(conv_layer)
         flatten_layer = tf.keras.layers.Flatten()(max_pool_layer)
         dense_layer = tf.keras.layers.Dense(10, activation='softmax')(flatten_layer)
 
@@ -146,7 +146,7 @@ def main():
     test_generator = fetch_spectogram_dataset("data/images/melspectorgram/test")
     
     # Create the time model
-    time_model = TimeModel()
+    time_model = FrequencyModel()
     
     # Build the time model
     time_model.build_model(n=4)
