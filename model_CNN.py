@@ -22,12 +22,13 @@ import itertools
 import keras
 from keras.layers import Flatten, Dense, Dropout, Conv2D, Activation ,MaxPooling2D, Flatten
 from tensorflow.keras.models import Sequential
+from keras.layers import LeakyReLU
 
 # Defining the black box model
 class CNNModel:
     def __init__(self):
         self.model = None
-        self.model_name = "2layers_CNN_model"
+        self.model_name = "2layers_CNN_model2"
         self.model_path = "models/" + self.model_name +"/"+ self.model_name + ".h5"
         self.model_weights_path = "models/" + self.model_name +"/"+  self.model_name + "_weights.h5"
         self.model_history_path_acc = "models/" + self.model_name +"/"+ self.model_name + "_history_acc.png"
@@ -40,16 +41,17 @@ class CNNModel:
         This function is used to create the black box model :
         """
         # Defining the input layer
-        input_layer = tf.keras.layers.Input(shape=(40, 80, 3))
         
         model = Sequential()
 
         #Adding the CNN layers along with some drop outs and maxpooling
-        model.add(Conv2D(64, (3,3), activation = 'relu', input_shape = (40, 80, 3)))
+        model.add(Conv2D(64, (3,3), activation ='relu', input_shape = (217, 334, 3)))
         model.add(MaxPooling2D(pool_size = (2,2)))
 
-        model.add(Conv2D(32, (3,2), activation = 'relu'))
-        model.add(MaxPooling2D(pool_size = 2))
+
+        model.add(Conv2D(32, (3,3),strides=(1,1) , activation = 'relu'))
+        model.add(MaxPooling2D(pool_size = (2,2)))
+        
         model.add(Flatten())
 
         
@@ -57,7 +59,6 @@ class CNNModel:
         model.add(Dense(256, activation = 'relu'))
         model.add(Dropout(0.5))
         model.add(Dense(124, activation = 'relu'))
-
         #final output layer with 10 predictions to be made
         model.add(Dense(10, activation = 'softmax'))
     
@@ -65,7 +66,8 @@ class CNNModel:
         
         # Compiling the model
         self.model = model
-        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.00001), loss='categorical_crossentropy', metrics=['accuracy'])
+
         
     def train_model(self, train_generator,validation_generator, epochs=10):
         """
@@ -190,7 +192,7 @@ def main():
     black_box_model.build_model()
     
     # Train the black box model
-    black_box_model.train_model(train_generator,validation_generator, epochs=100)
+    black_box_model.train_model(train_generator,validation_generator, epochs=200)
 
     # Save the black box model
     black_box_model.save_model()
