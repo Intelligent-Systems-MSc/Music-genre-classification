@@ -20,7 +20,8 @@ from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import itertools
 import argparse
-
+import os
+import sys
 # Define the frequency model
 class FrequencyModel(object):
     def __init__(self):
@@ -31,16 +32,16 @@ class FrequencyModel(object):
         self.model_history_path = "models/" + self.model_name +"/"+ self.model_name + "_history.png"
         self.model_history = None
     
-    def build_model(self, n = 4):
+    def build_model(self, m = 4):
         """
         This function is used to create the time model :
         """
-        N = 40
+        N = 200
         # Defining the input layer
-        input_layer = tf.keras.layers.Input(shape=(40, 80, 3))
+        input_layer = tf.keras.layers.Input(shape=(120, 200, 3))
         
         # Defining the convolutional layer
-        conv_layer = tf.keras.layers.Conv2D(32, (n, 1), activation='relu')(input_layer)
+        conv_layer = tf.keras.layers.Conv2D(32, (m, 1), activation='relu')(input_layer)
         max_pool_layer = tf.keras.layers.MaxPool2D((1, N))(conv_layer)
         flatten_layer = tf.keras.layers.Flatten()(max_pool_layer)
         dense_layer = tf.keras.layers.Dense(10, activation='softmax')(flatten_layer)
@@ -51,12 +52,12 @@ class FrequencyModel(object):
         self.model = Model(input_layer, output_layer)
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
         
-    def train_model(self, train_generator, epochs=10):
+    def train_model(self, train_generator, validation_generator, epochs=10):
         """
         This function is used to train the time model :
         """
         # Training the model
-        self.model_history = self.model.fit_generator(train_generator, epochs=epochs)
+        self.model_history = self.model.fit_generator(train_generator, validation_data= train_generator, epochs=epochs)
         
     def save_model(self):
         """
@@ -97,10 +98,12 @@ class FrequencyModel(object):
         # Plot the model history
         plt.plot(self.model_history.history['loss'])
         plt.plot(self.model_history.history['accuracy'])
+        plt.plot(self.model_history.history['val_accuracy'])
         plt.title('Model accuracy')
         plt.ylabel('Accuracy')
         plt.xlabel('Epoch')
-        plt.legend(['Loss', 'Accuracy'], loc='upper left')
+        plt.legend(['Loss', 'Accuracy', 'Val accuracy'], loc='upper left')
+        
         plt.savefig(self.model_history_path)
         plt.show()
     
@@ -142,20 +145,21 @@ class FrequencyModel(object):
 def main():
     
     #Fetch the training dataset and the test dataset
-    train_generator = fetch_spectogram_dataset("data/images/melspectorgram/train")
-    test_generator = fetch_spectogram_dataset("data/images/melspectorgram/test")
+    train_generator = fetch_spectogram_dataset("data/images/melspectrogram/train")
+    validation_generator = fetch_spectogram_dataset("data/images/melspectrogram/validation")
+    test_generator = fetch_spectogram_dataset("data/images/melspectrogram/test")
     
     # Create the time model
     time_model = FrequencyModel()
     
     # Build the time model
-    time_model.build_model(n=4)
+    time_model.build_model()
     
     # Train the time model
-    time_model.train_model(train_generator, epochs=5)
+    time_model.train_model(train_generator, validation_generator, epochs=50)
     
     # Save the time model
-    #time_model.save_model()
+    time_model.save_model()
 
     # Evaluate the time model
     time_model.evaluate_model(test_generator)

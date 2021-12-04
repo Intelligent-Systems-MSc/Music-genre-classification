@@ -45,19 +45,22 @@ def split_dataset(dataset_path_in, path_out, train_size, validation_size):
             # Check if path exists
             if not os.path.exists(path_out + "/train/" + folder):
                 os.makedirs(path_out + "/train/" + folder)
-            os.rename(dataset_path_in + "/" + folder + "/" + files[i], path_out + "/train/" + folder + "/" + files[i])
+            # Copy the file
+            os.system("cp " + dataset_path_in + "/" + folder + "/" + files[i] + " " + path_out + "/train/" + folder)
         # Create the validation set
         for i in range(nb_train_files, nb_train_files + nb_validation_files):
             # Check if path exists
             if not os.path.exists(path_out + "/validation/" + folder):
                 os.makedirs(path_out + "/validation/" + folder)
-            os.rename(dataset_path_in + "/" + folder + "/" + files[i], path_out + "/validation/" + folder + "/" + files[i])
+            # Copy the file
+            os.system("cp " + dataset_path_in + "/" + folder + "/" + files[i] + " " + path_out + "/validation/" + folder)
         # Create the testing set
         for i in range(nb_train_files + nb_validation_files, nb_files):
             # Check if path exists
             if not os.path.exists(path_out + "/test/" + folder):
                 os.makedirs(path_out + "/test/" + folder)
-            os.rename(dataset_path_in + "/" + folder + "/" + files[i], path_out + "/test/" + folder + "/" + files[i])
+            # Copy the file
+            os.system("cp " + dataset_path_in + "/" + folder + "/" + files[i] + " " + path_out + "/test/" + folder)
         
 
     
@@ -67,7 +70,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_path", type=str, default="data/dataset/melspectrogram/", help="Path to the dataset")
     parser.add_argument("--path_out", type=str, default="data/images/melspectrogram/", help="Path to the output folder")
-    parser.add_argument("--train_size", type=float, default=0.8, help="Size of the training set")
+    parser.add_argument("--train_size", type=float, default=0.7, help="Size of the training set")
     parser.add_argument("--validation_size", type=float, default=0.1, help="Size of the validation set")
     args = parser.parse_args()
 
