@@ -15,8 +15,8 @@ logs
 *.sw*
 
 # Ignore py cache files 
-__pycache__/
+/__pycache__/
 
 # Ignore .ipynb files
-.ipynb_checkpoints/
+/.ipynb_checkpoints/
 

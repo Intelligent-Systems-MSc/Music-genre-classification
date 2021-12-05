@@ -140,9 +140,9 @@ class TimeModel(object):
 def main():
     
     #Fetch the training dataset and the test dataset
-    train_generator = fetch_spectogram_dataset("data/images/melspectrogram/train")
-    test_generator = fetch_spectogram_dataset("data/images/melspectrogram/test")
-    validation_generator = fetch_spectogram_dataset("data/images/melspectrogram/validation")
+    train_generator = fetch_spectogram_dataset("data/images/mfcc/train")
+    test_generator = fetch_spectogram_dataset("data/images/mfcc/test")
+    validation_generator = fetch_spectogram_dataset("data/images/mfcc/validation")
     
     # Create the time model
     time_model = TimeModel()
@@ -151,7 +151,7 @@ def main():
     time_model.build_model(n=4)
     
     # Train the time model
-    time_model.train_model(train_generator, validation_generator, epochs=50)
+    time_model.train_model(train_generator, validation_generator, epochs=100)
     
     # Save the time model
     #time_model.save_model()

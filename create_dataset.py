@@ -57,7 +57,7 @@ def create_dataset(dataset_path_in, dataset_path_out, feature, n_fft, hop_length
             elif feature == "chroma_stft":
                 image = librosa.feature.chroma_stft(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
             elif feature == "chroma_cqt":
-                image = librosa.feature.chroma_cqt(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+                image = librosa.feature.chroma_cqt(y=y, sr=sr, hop_length=hop_length)
             elif feature == "chroma_cens":
                 image = librosa.feature.chroma_cens(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
             

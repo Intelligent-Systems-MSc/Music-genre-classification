@@ -21,13 +21,14 @@ import argparse
 
 # Defining the black box model
 class BlackBoxModel:
-    def __init__(self):
+    def __init__(self, features):
         self.model = None
         self.model_name = "black_box_model"
-        self.model_path = "models/" + self.model_name +"/"+ self.model_name + ".h5"
-        self.model_weights_path = "models/" + self.model_name +"/"+  self.model_name + "_weights.h5"
-        self.model_history_path = "models/" + self.model_name +"/"+ self.model_name + "_history.png"
+        self.model_path = "models/" +self.model_name +"/" + features + "/"+ self.model_name + ".h5"
+        self.model_weights_path = "models/" + self.model_name + "/" + features+"/"+self.model_name + "_weights.h5"
+        self.model_history_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_history.png"
         self.model_history = None
+    
     
     def build_model(self):
         """
@@ -161,15 +162,22 @@ class BlackBoxModel:
 
 def main():
     
-    # Fetch the training and test dataset
-    train_generator = fetch_spectogram_dataset("data/images/melspectrogram/train")
-    test_generator =  fetch_spectogram_dataset("data/images/melspectrogram/test")
-    validation_generator = fetch_spectogram_dataset("data/images/melspectrogram/validation")
+     # Parse the arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--features", type=str, default="melspectrogram", help="The features to use")
+    parser.add_argument("--epochs", type=int, default=50, help="The number of epochs to train the model") 
+    args = parser.parse_args()
+
+    
+    #Fetch the training dataset and the test dataset
+    train_generator = fetch_spectogram_dataset("data/images/"+args.features +"/train")
+    validation_generator = fetch_spectogram_dataset("data/images/"+args.features +"/validation")
+    test_generator = fetch_spectogram_dataset("data/images/"+args.features +"/test")
    
     
     
     # Create the black box model
-    black_box_model = BlackBoxModel()
+    black_box_model = BlackBoxModel(args.features)
     
     # Define the optimizer with a learning rate of 0.05
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.005)

@@ -24,12 +24,13 @@ import os
 import sys
 # Define the frequency model
 class FrequencyModel(object):
-    def __init__(self):
+    def __init__(self, features):
         self.model = None
         self.model_name = "frequency_model"
-        self.model_path = "models/"+ self.model_name +"/"+ self.model_name + ".h5"
-        self.model_weights_path = "models/" + self.model_name + "/"+self.model_name + "_weights.h5"
-        self.model_history_path = "models/" + self.model_name +"/"+ self.model_name + "_history.png"
+        self.model_path = "models/" +self.model_name +"/" + features + "/"+ self.model_name + ".h5"
+        self.model_weights_path = "models/" + self.model_name + "/" + features+"/"+self.model_name + "_weights.h5"
+        self.model_history_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_history.png"
+        self.matrix_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_confusion_matrix.png"
         self.model_history = None
     
     def build_model(self, m = 4):
@@ -51,6 +52,7 @@ class FrequencyModel(object):
         # Compiling the model
         self.model = Model(input_layer, output_layer)
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
         
     def train_model(self, train_generator, validation_generator, epochs=10):
         """
@@ -139,24 +141,30 @@ class FrequencyModel(object):
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         plt.tight_layout()
-        plt.savefig("models/"+ self.model_name +"/"+"confusion_matrix.png")
+        plt.savefig(self.matrix_path)
         plt.show()
 
 def main():
+    # Parse the arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--features", type=str, default="melspectrogram", help="The features to use")
+    parser.add_argument("--epochs", type=int, default=50, help="The number of epochs to train the model") 
+    args = parser.parse_args()
+
     
     #Fetch the training dataset and the test dataset
-    train_generator = fetch_spectogram_dataset("data/images/melspectrogram/train")
-    validation_generator = fetch_spectogram_dataset("data/images/melspectrogram/validation")
-    test_generator = fetch_spectogram_dataset("data/images/melspectrogram/test")
+    train_generator = fetch_spectogram_dataset("data/images/"+args.features +"/train")
+    validation_generator = fetch_spectogram_dataset("data/images/"+args.features +"/validation")
+    test_generator = fetch_spectogram_dataset("data/images/"+args.features +"/test")
     
     # Create the time model
-    time_model = FrequencyModel()
+    time_model = FrequencyModel(args.features)
     
     # Build the time model
     time_model.build_model()
     
     # Train the time model
-    time_model.train_model(train_generator, validation_generator, epochs=50)
+    time_model.train_model(train_generator, validation_generator, epochs=args.epochs)
     
     # Save the time model
     time_model.save_model()
