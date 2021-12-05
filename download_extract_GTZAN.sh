@@ -16,4 +16,4 @@ fi
 mv genres data/
 
 # Delete the files in genres 
-rm -f data/*
+rm -f data/* 

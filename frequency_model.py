@@ -33,7 +33,7 @@ class FrequencyModel(object):
         self.matrix_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_confusion_matrix.png"
         self.model_history = None
     
-    def build_model(self, m = 4):
+    def build_model(self, m = 12):
         """
         This function is used to create the time model :
         """
