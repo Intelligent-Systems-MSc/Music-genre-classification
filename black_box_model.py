@@ -27,6 +27,7 @@ class BlackBoxModel:
         self.model_path = "models/" +self.model_name +"/" + features + "/"+ self.model_name + ".h5"
         self.model_weights_path = "models/" + self.model_name + "/" + features+"/"+self.model_name + "_weights.h5"
         self.model_history_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_history.png"
+        self.matrix_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_confusion_matrix.png"
         self.model_history = None
     
     
@@ -95,6 +96,8 @@ class BlackBoxModel:
         test_loss, test_acc = self.model.evaluate_generator(test_generator)
         print("Test loss: ", test_loss)
         print("Test accuracy: ", test_acc)
+        
+        return test_loss, test_acc
     
     def plot_model_history(self):
         """
@@ -148,10 +151,18 @@ class BlackBoxModel:
         thresh = cm.max() / 2.
         for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
             plt.text(j, i, format(cm[i, j], fmt), horizontalalignment="center", color="white" if cm[i, j] > thresh else "black")
+        
+
+         # Evaluate the model
+        test_loss , test_acc = self.evaluate_model(test_generator)
+        
+        # Add accuracy and loss to the confusion matrix
+        plt.text(0, 0, "Accuracy : " + str(test_acc), horizontalalignment="left", color="white")
+        plt.text(0, 1, "Loss : " + str(test_loss), horizontalalignment="left", color="white")
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         plt.tight_layout()
-        plt.savefig("models/"+ self.model_name +"/"+"confusion_matrix.png")
+        plt.savefig(self.matrix_path)
         plt.show()
     
     def summary(self):

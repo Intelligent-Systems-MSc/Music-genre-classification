@@ -91,6 +91,8 @@ class FrequencyModel(object):
         # Evaluate the model
         test_loss, test_acc = self.model.evaluate_generator(test_generator)
         print('Test accuracy:', test_acc)
+        
+        return test_loss, test_acc
     
     
     def plot_model_history(self):
@@ -138,6 +140,13 @@ class FrequencyModel(object):
         thresh = cm.max() / 2.
         for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
             plt.text(j, i, format(cm[i, j], fmt), horizontalalignment="center", color="white" if cm[i, j] > thresh else "black")
+        
+         # Evaluate the model
+        test_loss , test_acc = self.evaluate_model(test_generator)
+        
+        # Add accuracy and loss to the confusion matrix
+        plt.text(0, 0, "Accuracy : " + str(test_acc), horizontalalignment="left", color="white")
+        plt.text(0, 1, "Loss : " + str(test_loss), horizontalalignment="left", color="white")
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         plt.tight_layout()
