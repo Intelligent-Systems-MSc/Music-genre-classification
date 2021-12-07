@@ -33,7 +33,7 @@ class FrequencyModel(object):
         self.matrix_path = "models/" +self.model_name +"/"+ features+"/"+self.model_name + "_confusion_matrix.png"
         self.model_history = None
     
-    def build_model(self, m = 12):
+    def build_model(self, m = 60):
         """
         This function is used to create the time model :
         """
@@ -145,8 +145,8 @@ class FrequencyModel(object):
         test_loss , test_acc = self.evaluate_model(test_generator)
         
         # Add accuracy and loss to the confusion matrix
-        plt.text(0, 0, "Accuracy : " + str(test_acc), horizontalalignment="left", color="white")
-        plt.text(0, 1, "Loss : " + str(test_loss), horizontalalignment="left", color="white")
+        plt.text(0, 0, "Accuracy : " + str(test_acc))
+        plt.text(0, 1, "Loss : " + str(test_loss))
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         plt.tight_layout()

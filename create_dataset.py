@@ -21,7 +21,7 @@ The audio files dataset consists of 10 folders which correspond to 10 different 
 According to the choosed feature, it will create a dataset of images representing the audio files.
 """
 
-def create_dataset(dataset_path_in, dataset_path_out, feature, n_fft, hop_length):
+def create_dataset(dataset_path_in, dataset_path_out, feature, n_fft, hop_length, mel_bins , n_mfcc, n_chroma ):
     """
     This function is used to create dataset of images.
     :param dataset_path_in: path of the dataset
@@ -51,15 +51,15 @@ def create_dataset(dataset_path_in, dataset_path_out, feature, n_fft, hop_length
             y, sr = librosa.load(path)
             # Extract the feature
             if feature == "melspectrogram":
-                image = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+                image = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=mel_bins, window='blackman')
             elif feature == "mfcc":
-                image = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
+                image = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc, window='blackman')
             elif feature == "chroma_stft":
-                image = librosa.feature.chroma_stft(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+                image = librosa.feature.chroma_stft(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_chroma=n_chroma, window='blackman')
             elif feature == "chroma_cqt":
-                image = librosa.feature.chroma_cqt(y=y, sr=sr, hop_length=hop_length)
+                image = librosa.feature.chroma_cqt(y=y, sr=sr, hop_length=hop_length, n_chroma=n_chroma, window='blackman')
             elif feature == "chroma_cens":
-                image = librosa.feature.chroma_cens(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+                image = librosa.feature.chroma_cens(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_chroma=n_chroma, window='blackman')
             
             # Ommit the .wav file extension file
             file = file[:-4]
@@ -92,13 +92,17 @@ def main():
     parser.add_argument("--dataset_path_in", type=str, default="data/genres" ,help="Path of the dataset")
     parser.add_argument("--dataset_path_out", type=str, default="data/dataset" ,help="Path of the dataset")
     parser.add_argument("--feature", type=str,default= "melspectrogram" ,help="Feature to extract : melspectrogram, mfcc, chroma_stft, chroma_cqt, chroma_cens")
-    parser.add_argument("--n_fft", type=int, default = 1024,help="Number of fft points")
-    parser.add_argument("--hop_length", type=int, default = 512,help="Number of samples between successive frames")
+    parser.add_argument("--n_fft", type=int, default = 2048,help="Number of fft points")
+    parser.add_argument("--hop_length", type=int, default = 1024,help="Number of samples between successive frames")
+    parser.add_argument("--mel_bins", type=int, default = 128,help="Number of mel bins")
+    parser.add_argument("--n_mfcc", type=int, default = 13,help="Number of mfcc")
+    parser.add_argument("--n_chroma", type=int, default = 12,help="Number of chroma")
+
 
     # Parse the arguments
     args = parser.parse_args()
     # Create the dataset
-    create_dataset(args.dataset_path_in, args.dataset_path_out, args.feature, args.n_fft, args.hop_length)
+    create_dataset(args.dataset_path_in, args.dataset_path_out, args.feature, args.n_fft, args.hop_length, args.mel_bins, args.n_mfcc, args.n_chroma)
 
 
 if __name__ == "__main__":
