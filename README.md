@@ -17,6 +17,7 @@ The dataset is pre-processed in the following way :
 * Data splits into test and train are performed using spltit_dataset.py script.
 ### Usage 
  To generate the spectrograms and the data splits, do as follows :
+
  * Run the "download_extract_GTZAN" file depending on your system to download the dataset and extract it.
  * Run the following command :
 ```bash
@@ -24,8 +25,18 @@ python create_spectrograms.py --audio_files_path=data/genres --dataset_path=data
 ```
 * Split the dataset into train and test using the `split_dataset.py` script.
 ```bash
-python split_dataset.py --dataset_path=data/dataset/ --train_size=0.8
+python split_dataset.py
 ```
+
+To train a model, test it and evaluate it : 
+```bash
+python <Name of the model>.py --features=<Feauture used> --epochs=<Number of epochs>
+```
+
+Note : results of the training and the evaluation are saved in the "models/Name of the model/Feature Used" folder. In each folder, we have the following files :
+* Confusion matrix : the confusion matrix of the model.
+* Model History : the history of the model.
+* Model : the saved weights of the model.
 
 ## Models
 The models are implemented using the [tensorflow.keras](https://www.tensorflow.org/api_docs/python/tf/keras) library.
@@ -42,11 +53,26 @@ The architecture is defined in the [black_box_mmodel](model_architecture.py) fil
 
 ### Time model
 
+The time model is a convolutional neural network with a fixed architecture inspired by the [Musically Motivated Convolutional Neural Networks](http://jordipons.me/media/CBMI16.pdf). It has been concived to be able to classify music genres based on the time domain features. 
 
-## Results
+The architecture is defined as follows :
 
-## Conclusion
+* The input layer is a 2D convolutional layer with 32 filters, a kernel size of 1xn
+* A max pooling layer is added after the convolutional layer of size Mx1
+* The convolutional layer is flattened and connected to a dense layer with 10 neurons with a sigmoid activation function which corresponds to the probability of the music genre
+
+M is the height of the spectrogram and n is a variable to chose.
 
 
+### Frequency model
+
+The frequency model is the exact versa of the time model but with a kernel size of mx1 instead of 1xn and max pooling layer of size 1xN. 
+
+N is the width of the spectrogram and m is a variable to chose.
 
 
+### Time-Frequency model
+
+The time-frequency model tries to combine both the time and the frequency models. It is a convolutional neural network with a fixed architecture inspired by the [Musically Motivated Convolutional Neural Networks](http://jordipons.me/media/CBMI16.pdf). 
+
+We use the time and frequency models to extract the features from the spectrogram separately and then we combine to be input of a feed forward neural network of 200 neurons.
