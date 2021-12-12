@@ -101,8 +101,4 @@ In the folder "models_tqdm_notebooks", You find for every visual representation 
 VGG16+SVM, 2layers and 3 Layers CNN architectures. Moreover, for Mel-spectrogram,
 you find tested time, frequency, time/frequency models. 
 
-All models in this folder use datasets generated with tqdm library and not ImageGenerator. 
-The difference between the two is negligeable, however the structure of the code may differ in 
-certain parts.
-
 Due to the high numbers of carried out tests and the very limited storage space on git, drive links of used datasets and results are available in the file "models_tqdm_notebooks/readme.md".

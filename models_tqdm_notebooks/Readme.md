@@ -1,3 +1,12 @@
+### Presentation
+In this folder, You find for every visual representation (spectrogram), a notebook that allows to test the different approaches proposed, mainly:  VGG16 transfer learning,
+VGG16+SVM, 2layers and 3 Layers CNN architectures. Moreover, for Mel-spectrogram,
+you find tested time, frequency, time/frequency models. 
+
+All models in this folder use datasets generated with tqdm library and not ImageGenerator. 
+The difference between the two is negligeable, however the structure of the code may differ in 
+certain parts.
+
 ### Links to the generated datasets  
 
 Mel_spectrogram : https://drive.google.com/file/d/19SYkVqvBoCkjXZRYiNpVdZ-f-hEuRsS4/view?usp=sharing
@@ -6,7 +15,7 @@ CQT,Melspectrogram,MFCC : https://drive.google.com/file/d/1pT58P5TzHKueG03QefoC1
 
 Chroma_STFT,Melspectrogram, chroma_CQT : https://drive.google.com/file/d/1R5QeDRMJB3VpMcPoPsnoxGCbP8ZXtvZw/view?usp=sharing
 
-### Results 
+### Links to the Results 
 
 Since all tests for these codes were tested on Google colab, their results were saved on google drive. 
 The following link contains all models results for this branch : 
