@@ -38,16 +38,18 @@ def fetch_spectogram_dataset(path_to_dataset,shape_data):
     
     label=0
     data=[]
+    classes=[]
     for classe in tqdm(os.listdir(path_to_dataset)) :
         print(classe)
+        classes= np.append(classes,classe)
         file_name = os.path.join(path_to_dataset,classe)
         
         for name_image in tqdm(os.listdir(file_name)): 
             image= os.path.join(file_name,name_image)
             add_image(image,data,label,shape_data)
         label+=1
-    classes = label
-    return data, classes
+    n_classes = label
+    return data, n_classes, classes
 
 
 def list_train_test(mat,classes,Nimage,coef):
@@ -63,7 +65,7 @@ def list_train_test(mat,classes,Nimage,coef):
 
 class prep_data_images: 
     def prep_data(self, path,shape_data):
-            data,n_classes = fetch_spectogram_dataset(path,shape_data)
+            data,n_classes,classes = fetch_spectogram_dataset(path,shape_data)
             train,test = list_train_test(data,n_classes,100,0.7)
             random.shuffle(train) # shuffling the training data
             X_train=[]
@@ -92,6 +94,7 @@ class prep_data_images:
             self.ytest = y_test
             self.Xval = X_val
             self.yval = y_val
+            self.classes= classes
 # Main --------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # Fetch spectogram dataset
