@@ -38,6 +38,8 @@ Note : results of the training and the evaluation are saved in the "models/Name 
 * Model History : the history of the model.
 * Model : the saved weights of the model.
 
+
+
 ## Models
 The models are implemented using the [tensorflow.keras](https://www.tensorflow.org/api_docs/python/tf/keras) library.
 We use the folowing models :
@@ -76,3 +78,31 @@ N is the width of the spectrogram and m is a variable to chose.
 The time-frequency model tries to combine both the time and the frequency models. It is a convolutional neural network with a fixed architecture inspired by the [Musically Motivated Convolutional Neural Networks](http://jordipons.me/media/CBMI16.pdf). 
 
 We use the time and frequency models to extract the features from the spectrogram separately and then we combine to be input of a feed forward neural network of 200 neurons.
+
+
+### VGG16 transfer Learning Model
+
+The model is built on the ground of the well known VGG16 model, pre-trained on ImageNet dataset. We set the last 8 layers of VGG16 model to be re-trained, and add 3 fully connected Layers to enlarge the classification Block.
+
+### VGG16 + SVM Model 
+We take the previous VGG16 transfer learning architecture as feature extractor, and replace the last Sofrmax output layer with an SVM Classifier.
+
+### 2Layers CNN Model 
+The model contains 2 CNN Layers, a flatten layer and 2 Fully connected layers before the output softmax Layer.
+It resembles to the Black box model but considers deeper convolutions in time and frequencies, with a more sophisticated classification block.
+
+### 3Layers CNN Model 
+Very similar to the 2Layers CNN Model. It only adds an extra convolutional layer to deepen the extracted features.
+
+
+## Notebooks demonstration
+
+In the folder "models_tqdm_notebooks", You find for every visual representation (spectrogram), a notebook that allows to test the different approaches proposed, mainly:  VGG16 transfer learning,
+VGG16+SVM, 2layers and 3 Layers CNN architectures. Moreover, for Mel-spectrogram,
+you find tested time, frequency, time/frequency models. 
+
+All models in this folder use datasets generated with tqdm library and not ImageGenerator. 
+The difference between the two is negligeable, however the structure of the code may differ in 
+certain parts.
+
+Due to the high numbers of carried out tests and the very limited storage space on git, drive links of used datasets and results are available in the file "models_tqdm_notebooks/readme.md".
