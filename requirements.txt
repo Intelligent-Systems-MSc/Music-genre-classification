@@ -1,9 +1,0 @@
-# Packages needed for the build
-#
-#
-#
-#
-librosa
-numpy
-tqdm
-matplotlib
