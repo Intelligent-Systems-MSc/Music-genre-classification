@@ -1,7 +1,0 @@
-Links of the generated image datasets : 
-
-Mel_spectrogram : https://drive.google.com/file/d/19SYkVqvBoCkjXZRYiNpVdZ-f-hEuRsS4/view?usp=sharing
-
-CQT,Melspectrogram,MFCC : https://drive.google.com/file/d/1pT58P5TzHKueG03QefoC1YSMoDQ2jikp/view?usp=sharing
-
-Chroma_STFT,Melspectrogram, chroma_CQT : https://drive.google.com/file/d/1R5QeDRMJB3VpMcPoPsnoxGCbP8ZXtvZw/view?usp=sharing

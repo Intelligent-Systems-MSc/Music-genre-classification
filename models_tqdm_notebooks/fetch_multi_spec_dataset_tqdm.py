@@ -1,5 +1,13 @@
+#!/usr/bin/env python
+# coding: utf-8
+ 
 """
-Ce programme permet de récuper un jeu de données pour le réseau de neurones à partir de répertoire contenant des spectrogrammes, chaque répertoire représente un genre musical.
+Authors : Rayane KADEM
+This code allows a multi fetch of spectrogram datasets using tqdm library.
+This code takes as an input the names of 3 spectrograms to consider when creating 
+the dataset to be used in the multi-spectrogram-representation notebook. for an audio track
+it takes 3 selected spectrograms representations images on a gray level, and combines them
+into one 3 dimension image to be fed to a CNN.
 """
 
 # Imports --------------------------------------------------------------------------------------------------------------
@@ -20,9 +28,18 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 # Functions ------------------------------------------------------------------------------------------------------------
 
-def add_image(image_name,data,y,shape_data):
+def add_image(image_name1,image_name2,image_name3,data,y,shape_data):
 
-    image = (cv2.imread(image_name, cv2.IMREAD_COLOR)/255)
+    image1 = (cv2.imread(image_name1, cv2.IMREAD_GRAYSCALE)/255)
+    width,height = image1.shape
+    image1 = image1.reshape(width,height,1)
+    image2 = (cv2.imread(image_name2, cv2.IMREAD_GRAYSCALE)/255).reshape(width,height,1)
+    image3 = (cv2.imread(image_name3, cv2.IMREAD_GRAYSCALE)/255).reshape(width,height,1)
+    
+    #create one image from 3 spectrograms
+    image_mid = np.concatenate((image1,image2),axis=2)
+    image = np.concatenate((image_mid,image3),axis=2)
+    
     if shape_data == None : 
         image = image.astype(np.float16)
     else : 
@@ -30,7 +47,7 @@ def add_image(image_name,data,y,shape_data):
     data.append([image,y])
 
 
-def fetch_spectogram_dataset(path_to_dataset,shape_data):
+def fetch_spectogram_dataset(path_to_dataset,shape_data,features1,features2,features3):
     """
     This function is used to create spectogram dataset for training and testing :
     """
@@ -38,18 +55,32 @@ def fetch_spectogram_dataset(path_to_dataset,shape_data):
     
     label=0
     data=[]
-    classes=[]
-    for classe in tqdm(os.listdir(path_to_dataset)) :
+    #set directory of the 3 types of spectrograms
+    file_features1= path_to_dataset + "/"+ features1
+    file_features2= path_to_dataset + "/"+ features2
+    file_features3= path_to_dataset + "/"+ features3
+    
+    if os.name == 'nt':
+                #Delete the double backslash in the path
+                file_features1 = file_features1.replace("/", "\\")
+                file_features2 = file_features2.replace("/", "\\")
+                file_features3 = file_features3.replace("/", "\\")
+    for classe in tqdm(os.listdir(file_features1)) :
         print(classe)
-        classes= np.append(classes,classe)
-        file_name = os.path.join(path_to_dataset,classe)
+        file_name1 = os.path.join(file_features1,classe)
+        file_name2 = os.path.join(file_features2,classe)
+        file_name3 = os.path.join(file_features3,classe)
         
-        for name_image in tqdm(os.listdir(file_name)): 
-            image= os.path.join(file_name,name_image)
-            add_image(image,data,label,shape_data)
+        for name_image in tqdm(os.listdir(file_name1)): 
+            image1= os.path.join(file_name1,name_image)
+            image2= os.path.join(file_name2,name_image)
+            image3= os.path.join(file_name3,name_image)
+            add_image(image1,image2,image3,data,label,shape_data)
+            
         label+=1
-    n_classes = label
-    return data, n_classes, classes
+        
+    classes = label
+    return data, classes
 
 
 def list_train_test(mat,classes,Nimage,coef):
@@ -64,8 +95,8 @@ def list_train_test(mat,classes,Nimage,coef):
 
 
 class prep_data_images: 
-    def prep_data(self, path,shape_data):
-            data,n_classes,classes = fetch_spectogram_dataset(path,shape_data)
+    def prep_data(self, path,shape_data,features1,features2,features3):
+            data,n_classes = fetch_spectogram_dataset(path,shape_data,features1,features2,features3)
             train,test = list_train_test(data,n_classes,100,0.7)
             random.shuffle(train) # shuffling the training data
             X_train=[]
@@ -94,16 +125,16 @@ class prep_data_images:
             self.ytest = y_test
             self.Xval = X_val
             self.yval = y_val
-            self.classes= classes
 # Main --------------------------------------------------------------------------------------------------------------------
+
 if __name__ == "__main__":
     # Fetch spectogram dataset
-    data = prep_data_images()
-    data.prep_data("images",shape_data)
-    print(data.ytest)
-    print(data.ytest.shape)
-    print(data.ytest.sum())
+    path = "data/images"
+    shape_data = None
+    data,n_classes = fetch_spectogram_dataset(path,shape_data,"cqt","mfcc","melspectrogram")
+
     
+
 
 
 
