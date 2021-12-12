@@ -1,5 +1,5 @@
 """
-Author : Asma DAGMOUNE
+Author : Asma DAGMOUNE , Toufik FERHAT
 This program aims to implement the time model for the audio project.
 It's architecture is based on the paper "Experimenting with Musically Motivated
 Convolutional Neural Networks" and it is as follows:
