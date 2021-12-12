@@ -1,5 +1,6 @@
 """
-Ce programme permet de récuper un jeu de données pour le réseau de neurones à partir de répertoire contenant des spectrogrammes, chaque répertoire représente un genre musical.
+Authors : Asma DAGMOUNE, FERHAT Toufik
+This program allows to retrieve a data set for the neural network from directories containing spectrograms, each directory representing a musical genre.
 """
 
 # Imports --------------------------------------------------------------------------------------------------------------
